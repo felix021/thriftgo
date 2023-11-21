@@ -646,11 +646,17 @@ type Function struct {
 	throws       []*Field
 	argType      *StructLike
 	resType      *StructLike
+	service      *Service
 }
 
 // GoName returns the go name of the function.
 func (f *Function) GoName() Name {
 	return f.name
+}
+
+// Service returns the service that the function is defined in.
+func (f *Function) Service() *Service {
+	return f.service
 }
 
 // ResponseGoTypeName returns the go type of the response type of the function.

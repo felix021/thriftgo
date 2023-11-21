@@ -117,6 +117,25 @@ func (p *{{$TypeName}}) Error() string {
 	Client = `
 {{define "Client"}}
 {{InsertionPoint "slim.Client"}}
+{{- range .Functions}}
+{{- if or .Streaming.ClientStreaming .Streaming.ServerStreaming}}
+{{- $arg := index .Arguments 0}}
+{{- $ResponseType := .FunctionType.Name}}
+type {{.Service.GoName}}_{{.Name}}Server interface {
+	{{- UseStdLibrary "streaming" -}}
+	streaming.Stream
+	{{if .Streaming.ClientStreaming }}
+	Recv() (*{{$arg.Type.Name}}, error)
+	{{end}}
+	{{if .Streaming.ServerStreaming}}
+	Send(*{{$ResponseType}}) error
+	{{end}}
+	{{if and .Streaming.ClientStreaming (not .Streaming.ServerStreaming) }}
+	SendAndClose(*{{$ResponseType}}) error
+	{{end}}
+}
+{{- end}}{{/* Streaming */}}
+{{- end}}{{/* range .Functions */}}
 {{end}}{{/* define "Client" */}}`
 
 	Processor = `

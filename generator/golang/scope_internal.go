@@ -156,6 +156,7 @@ func (s *Scope) buildService(cu *CodeUtils, v *parser.Service) {
 			Function: f,
 			scope:    namespace.NewNamespace(namespace.UnderscoreSuffix),
 			name:     Name(fn),
+			service:  svc,
 		})
 	}
 

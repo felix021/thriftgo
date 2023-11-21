@@ -17,15 +17,24 @@ package templates
 // FunctionSignature .
 var FunctionSignature = `
 {{define "FunctionSignature"}}
-{{- UseStdLibrary "context"}}
 {{- $Function := .}}
-{{- .GoName}}(ctx context.Context
+{{- if or .Streaming.ClientStreaming .Streaming.ServerStreaming}}
+	{{- $arg := index .Arguments 0}}
+	{{- .GoName}}(
+	{{- if and .Streaming.ServerStreaming (not .Streaming.ClientStreaming) -}}
+		req *{{$arg.Type}}, 
+	{{- end -}}
+		stream {{.Service.GoName}}_{{.Name}}Server) (err error)
+{{- else -}}
+	{{- UseStdLibrary "context" -}}
+	{{- .GoName}}(ctx context.Context
 	{{- range .Arguments -}}
 		, {{.GoName}} {{.GoTypeName}}
 	{{- end -}}
 		) (
 	{{- if not .Void}}r {{.ResponseGoTypeName}}, {{- end -}}
 		err error)
+{{- end -}}{{/* end if streaming */}}
 {{- end}}{{/* define "FunctionSignature" */}}
 `
 

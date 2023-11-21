@@ -20,6 +20,14 @@ import (
 	"strings"
 )
 
+const (
+	StreamingModeKey       = "streaming.mode"
+	StreamingBidirectional = "bidirectional"
+	StreamingClientSide    = "client"
+	StreamingServerSide    = "server"
+	StreamingUnary         = "unary"
+)
+
 func indent(lines, pad string) string {
 	var ss []string
 	for _, s := range strings.Split(lines, "\n") {
@@ -280,4 +288,55 @@ func (t *Thrift) GetEnum(name string) (*Enum, bool) {
 
 func (p *Typedef) GetName() (v string) {
 	return p.Alias
+}
+
+func (t *Thrift) PatchStreaming() error {
+	for _, svc := range t.Services {
+		for _, f := range svc.Functions {
+			f.Streaming = &Streaming{}
+			for _, anno := range f.Annotations {
+				if anno.Key != StreamingModeKey {
+					continue
+				}
+				if len(anno.Values) != 1 {
+					return fmt.Errorf("%s.%s has multiple values for annotation %v (at most 1 allowed)",
+						svc.Name, f.Name, StreamingModeKey)
+				}
+				for _, value := range anno.Values {
+					f.Streaming.IsStreaming = true
+					switch value {
+					case StreamingClientSide:
+						f.Streaming.ClientStreaming = true
+					case StreamingServerSide:
+						f.Streaming.ServerStreaming = true
+					case StreamingBidirectional:
+						f.Streaming.ClientStreaming = true
+						f.Streaming.ServerStreaming = true
+						f.Streaming.BidirectionalStreaming = true
+					case StreamingUnary:
+						f.Streaming.Unary = true
+					default: // other types are not recognized
+						return fmt.Errorf("%s.%s has invalid value (%s) for annotation %v",
+							svc.Name, f.Name, value, StreamingModeKey)
+					}
+				}
+				if f.Streaming.IsStreaming && len(f.Arguments) != 1 {
+					return fmt.Errorf("streaming function %s.%s should have exactly 1 argument",
+						svc.Name, f.Name)
+				}
+
+				if f.Streaming.BidirectionalStreaming {
+					f.Streaming.Mode = StreamingBidirectional
+				} else if f.Streaming.ServerStreaming {
+					f.Streaming.Mode = StreamingServerSide
+				} else if f.Streaming.ClientStreaming {
+					f.Streaming.Mode = StreamingClientSide
+				} else if f.Streaming.Unary {
+					f.Streaming.Mode = StreamingUnary
+				}
+				break
+			}
+		}
+	}
+	return nil
 }
