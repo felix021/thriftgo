@@ -47,13 +47,15 @@ import (
 {{template "StructLike" .}}
 {{- end}}
 
+{{- if not Features.NoServiceCode}}
 {{- range .Services}}
-{{template "Service" .}}
-{{template "Client" .}}
+{{template "ThriftService" .}}
+{{template "ThriftClient" .}}
 {{- end}}
 
 {{- range .Services}}
-{{template "Processor" .}}
+{{template "ThriftProcessor" .}}
+{{- end}}
 {{- end}}
 
 {{- if Features.GenerateReflectionInfo}}
