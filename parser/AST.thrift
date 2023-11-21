@@ -163,6 +163,8 @@ struct Function {
     6: list<Field> Throws
     7: Annotations Annotations
     8: string ReservedComments
+    9: bool ClientStreaming
+    10: bool ServerStreaming
 }
 
 struct Service {
@@ -176,6 +178,7 @@ struct Service {
     5: optional Reference Reference
 
     6: string ReservedComments
+    7: bool HasStreaming
 }
 
 struct Include {
@@ -200,4 +203,5 @@ struct Thrift {
 
     // Name2Category keeps a mapping for all global names with their **direct** category.
     12: map<string, Category> Name2Category
+    13: bool HasStreaming
 }

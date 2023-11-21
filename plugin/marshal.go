@@ -27,7 +27,35 @@ func UnmarshalRequest(bs []byte) (*Request, error) {
 	if err := meta.Unmarshal(bs, req); err != nil {
 		return nil, err
 	}
+	patchStreaming(req)
 	return req, nil
+}
+
+func patchStreaming(req *Request) {
+	for _, svc := range req.AST.Services {
+		for _, f := range svc.Functions {
+			for _, anno := range f.Annotations {
+				if anno.Key == "streaming.mode" {
+					for _, value := range anno.Values {
+						switch value {
+						case "client":
+							f.ClientStreaming = true
+						case "server":
+							f.ServerStreaming = true
+						case "bidirectional":
+							f.ClientStreaming = true
+							f.ServerStreaming = true
+						}
+					}
+					break
+				}
+			}
+			if f.ClientStreaming || f.ServerStreaming {
+				svc.HasStreaming = true
+				req.AST.HasStreaming = true
+			}
+		}
+	}
 }
 
 // MarshalResponse encodes a response with binary protocol.
