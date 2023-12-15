@@ -16,7 +16,7 @@ package templates
 
 // Processor .
 var Processor = `
-{{define "Processor"}}
+{{define "ThriftProcessor"}}
 {{- UseStdLibrary "thrift"}}
 {{- $BasePrefix := ServicePrefix .Base}}
 {{- $BaseService := ServiceName .Base}}
@@ -184,5 +184,5 @@ func (p *{{$ProcessName}}) Process(ctx context.Context, seqId int32, iprot, opro
 	{{- $_ := (SetWithFieldMask $withFieldMask) }}
 {{- end}}
 {{- end}}{{/* range .Functions */}}
-{{- end}}{{/* define "Processor" */}}
+{{- end}}{{/* define "ThriftProcessor" */}}
 `

@@ -154,15 +154,6 @@ struct StructLike {
     5: string ReservedComments
 }
 
-struct Streaming {
-    1: string Mode                      // "bidirectional", "server", "client", "unary"
-    2: bool ClientStreaming             // GRPC/HTTP2
-    3: bool ServerStreaming             // GRPC/HTTP2
-    4: bool BidirectionalStreaming      // GRPC/HTTP2
-    5: bool Unary                       // GRPC/HTTP2
-    6: bool IsStreaming                 // including unary
-}
-
 struct Function {
     1: string Name
     2: bool Oneway
@@ -172,7 +163,6 @@ struct Function {
     6: list<Field> Throws
     7: Annotations Annotations
     8: string ReservedComments
-    9: Streaming streaming
 }
 
 struct Service {

@@ -115,7 +115,7 @@ func (p *{{$TypeName}}) Error() string {
 	`
 
 	Client = `
-{{define "Client"}}
+{{define "ThriftClient"}}
 {{InsertionPoint "slim.Client"}}
 {{- range .Functions}}
 {{- if or .Streaming.ClientStreaming .Streaming.ServerStreaming}}
@@ -136,10 +136,10 @@ type {{.Service.GoName}}_{{.Name}}Server interface {
 }
 {{- end}}{{/* Streaming */}}
 {{- end}}{{/* range .Functions */}}
-{{end}}{{/* define "Client" */}}`
+{{end}}{{/* define "ThriftClient" */}}`
 
 	Processor = `
-{{define "Processor"}}
+{{define "ThriftProcessor"}}
 {{InsertionPoint "slim.Processor"}}
 {{$throws := ServiceThrows .}}
 {{- if $throws}}
@@ -150,6 +150,6 @@ _ error = ({{.GoTypeName}})(nil)
 {{- end}}{{/* range $throws */}}
 )
 {{- end}}{{/* if $throws */}}
-{{- end}}{{/* define "Processor" */}}
+{{- end}}{{/* define "ThriftProcessor" */}}
 `
 )

@@ -40,7 +40,7 @@ var FunctionSignature = `
 
 // Service .
 var Service = `
-{{define "Service"}}
+{{define "ThriftService"}}
 {{- $BasePrefix := ServicePrefix .Base}}
 {{- $BaseService := ServiceName .Base}}
 {{- $ServiceName := .GoName}}
@@ -56,5 +56,5 @@ type {{$ServiceName}} interface {
 	{{template "FunctionSignature" .}}
 	{{- end}}
 }
-{{- end}}{{/* define "Service" */}}
+{{- end}}{{/* define "ThriftService" */}}
 `

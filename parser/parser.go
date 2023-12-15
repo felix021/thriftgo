@@ -119,9 +119,6 @@ func parseString(path, content string, includeDirs []string) (*Thrift, error) {
 	if err := p.parse(); err != nil {
 		return nil, err
 	}
-	if err := p.Thrift.PatchStreaming(); err != nil {
-		return nil, err
-	}
 	return &p.Thrift, nil
 }
 
