@@ -14,24 +14,6 @@
 
 package templates
 
-var StructLikeTemplates = []string{
-	StructLike,
-	StructLikeDefault,
-	FieldGetOrSet,
-	FieldIsSet,
-	StructLikeRead,
-	StructLikeReadField,
-	FieldRead,
-	FieldReadStructLike,
-	HandleUnknownFields,
-	StructLikeWrite,
-	StructLikeWriteField,
-	FieldWrite,
-	FieldWriteStructLike,
-	StructLikeDeepEqual,
-	StructLikeDeepEqualField,
-}
-
 // StructLike is the code template for struct, union, and exception.
 var StructLike = `
 {{define "StructLike"}}

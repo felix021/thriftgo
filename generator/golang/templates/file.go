@@ -47,7 +47,6 @@ import (
 {{template "StructLike" .}}
 {{- end}}
 
-{{- if not Features.NoServiceCode}}
 {{- range .Services}}
 {{template "ThriftService" .}}
 {{template "ThriftClient" .}}
@@ -55,7 +54,6 @@ import (
 
 {{- range .Services}}
 {{template "ThriftProcessor" .}}
-{{- end}}
 {{- end}}
 
 {{- if Features.GenerateReflectionInfo}}

@@ -281,7 +281,7 @@ func (g *GoBackend) removeStreamingFunctions(ast *parser.Thrift) {
 			}
 			if st.IsStreaming {
 				g.log.Warn(fmt.Sprintf("skip streaming function %s.%s: not supported by your kitex, "+
-					"please update to the latest kitex", svc.Name, f.Name))
+					"please update your kitex tool to the latest version", svc.Name, f.Name))
 				continue
 			}
 			functions = append(functions, f)

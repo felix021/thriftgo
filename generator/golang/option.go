@@ -55,7 +55,6 @@ type Features struct {
 	CodeRef                bool `code_ref:"Genenerate code ref by given idl-ref.yaml"`
 	KeepCodeRefName        bool `keep_code_ref_name:"Genenerate code ref but still keep file name."`
 	TrimIDL                bool `trim_idl:"Simplify IDL to the most concise form before generating code."`
-	NoServiceCode          bool `no_service_code:"Do not generate code for server/client/processor, moved to kitex"`
 	ThriftStreaming        bool `thrift_streaming:"Recognize thrift streaming annotation and generate streaming code."`
 
 	JSONStringer bool `json_stringer:"Generate the JSON marshal method in String() method."`
@@ -91,7 +90,6 @@ var defaultFeatures = Features{
 	SnakeTyleJSONTag:       false,
 	LowerCamelCaseJSONTag:  false,
 	GenerateReflectionInfo: false,
-	NoServiceCode:          false,
 	ThriftStreaming:        false,
 	EnumAsINT32:            false,
 	TrimIDL:                false,
